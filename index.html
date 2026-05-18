@@ -112,7 +112,7 @@
     <div class="max-w-7xl mx-auto bg-surface brutal-border shadow-brutal flex justify-between items-center p-3 md:p-4">
       <a href="#" class="flex items-center gap-1 pl-2">
         <img src="./Kite_Transparent.png" alt="KyteStudios" class="h-8 md:h-10">
-        <span class="font-sans font-black text-xl tracking-tighter">KyteStudios</span>
+        <span class="font-sans font-black text-xl tracking-tighter hidden sm:block">KyteStudios</span>
       </a>
       <nav class="hidden md:flex gap-4 font-mono text-sm font-bold uppercase items-center">
         <a href="#expertise"
@@ -126,9 +126,19 @@
         class="bg-ink text-surface px-6 py-3 font-mono text-sm font-bold uppercase brutal-border interactive-element hidden md:flex items-center gap-2">
         Let's Talk <span class="material-symbols-outlined text-[18px]">chat</span>
       </a>
-      <button class="md:hidden bg-ink text-surface p-2 brutal-border">
-        <span class="material-symbols-outlined">menu</span>
+      <button id="mobile-menu-btn" class="md:hidden bg-ink text-surface p-2 brutal-border interactive-element transition-colors">
+        <span id="mobile-menu-icon" class="material-symbols-outlined block">menu</span>
       </button>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="max-w-7xl mx-auto mt-2 bg-surface brutal-border shadow-brutal p-4 flex flex-col gap-2 md:hidden opacity-0 pointer-events-none -translate-y-4 transition-all duration-300 transform origin-top">
+      <a href="#expertise" class="mobile-link text-center px-4 py-3 border-2 border-transparent hover:border-ink hover:bg-electric hover:text-surface font-mono text-sm font-bold uppercase transition-all">Expertise</a>
+      <a href="#work" class="mobile-link text-center px-4 py-3 border-2 border-transparent hover:border-ink hover:bg-tangerine hover:text-ink font-mono text-sm font-bold uppercase transition-all">Work</a>
+      <a href="#testimonials" class="mobile-link text-center px-4 py-3 border-2 border-transparent hover:border-ink hover:bg-electric hover:text-surface font-mono text-sm font-bold uppercase transition-all">Testimonials</a>
+      <a href="#contact" class="mobile-link text-center bg-ink text-surface px-4 py-3 border-2 border-ink hover:bg-surface hover:text-ink font-mono text-sm font-bold uppercase flex justify-center items-center gap-2 transition-colors">
+        Let's Talk <span class="material-symbols-outlined text-[18px]">chat</span>
+      </a>
     </div>
   </header>
 
@@ -508,6 +518,12 @@
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
+        
+        // Close mobile menu if open
+        if (typeof isMobileMenuOpen !== 'undefined' && isMobileMenuOpen) {
+          toggleMobileMenu();
+        }
+
         const target = this.getAttribute('href');
         if (target === '#') {
           lenis.scrollTo(0, { duration: 1.2 });
@@ -516,6 +532,33 @@
         }
       });
     });
+
+    // Mobile Menu Logic
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let isMobileMenuOpen = false;
+
+    function toggleMobileMenu() {
+      isMobileMenuOpen = !isMobileMenuOpen;
+      if (isMobileMenuOpen) {
+        mobileMenuIcon.innerText = 'close';
+        mobileMenu.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
+        mobileMenu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        mobileMenuBtn.classList.remove('bg-ink', 'text-surface');
+        mobileMenuBtn.classList.add('bg-electric', 'text-white');
+      } else {
+        mobileMenuIcon.innerText = 'menu';
+        mobileMenu.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
+        mobileMenu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        mobileMenuBtn.classList.add('bg-ink', 'text-surface');
+        mobileMenuBtn.classList.remove('bg-electric', 'text-white');
+      }
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    }
 
     // GSAP Animations
     gsap.registerPlugin(ScrollTrigger);
