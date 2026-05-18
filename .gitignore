@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Potential build/deps
+node_modules/
+dist/
+.env
+Kite_Landing.png
+Kite_Transparent.png

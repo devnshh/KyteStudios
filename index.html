@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KyteStudios</title>
+  <link rel="icon" type="image/png" href="./Kite_Transparent.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap"
+    rel="stylesheet">
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            bg: '#FAF9F6',
+            ink: '#111111',
+            tangerine: '#FF5522',
+            electric: '#0055FF',
+            surface: '#FFFFFF',
+          },
+          boxShadow: {
+            'brutal': '6px 6px 0px 0px #111111',
+            'brutal-sm': '4px 4px 0px 0px #111111',
+            'brutal-hover': '2px 2px 0px 0px #111111',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP & Lenis -->
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    body {
+      background-color: #FAF9F6;
+      background-image:
+        linear-gradient(rgba(0, 85, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 85, 255, 0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      overflow-x: hidden;
+      color: #111111;
+    }
+
+    .brutal-border {
+      border: 2px solid #111111;
+    }
+
+    .interactive-element {
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .interactive-element:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 4px 4px 0px 0px #111111;
+    }
+
+    .interactive-element:active {
+      transform: translate(6px, 6px);
+      box-shadow: 0px 0px 0px 0px #111111;
+    }
+
+    .grid-flow {
+      animation: backgroundPan 20s linear infinite;
+    }
+
+    @keyframes backgroundPan {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: -32px -32px;
+      }
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="grid-flow selection:bg-electric selection:text-white">
+  <div class="noise-overlay"></div>
+
+  <!-- Navbar -->
+  <header class="fixed top-4 left-4 right-4 z-50">
+    <div class="max-w-7xl mx-auto bg-surface brutal-border shadow-brutal flex justify-between items-center p-3 md:p-4">
+      <a href="#" class="flex items-center gap-1 pl-2">
+        <img src="./Kite_Transparent.png" alt="KyteStudios" class="h-8 md:h-10">
+        <span class="font-sans font-black text-xl tracking-tighter hidden sm:block">KyteStudios</span>
+      </a>
+      <nav class="hidden md:flex gap-4 font-mono text-sm font-bold uppercase items-center">
+        <a href="#expertise"
+          class="px-3 py-1.5 border-2 border-transparent hover:border-ink hover:bg-electric hover:text-surface hover:shadow-brutal-sm transition-all hover:-translate-y-1">Expertise</a>
+        <a href="#work"
+          class="px-3 py-1.5 border-2 border-transparent hover:border-ink hover:bg-tangerine hover:text-ink hover:shadow-brutal-sm transition-all hover:-translate-y-1">Work</a>
+        <a href="#testimonials"
+          class="px-3 py-1.5 border-2 border-transparent hover:border-ink hover:bg-electric hover:text-surface hover:shadow-brutal-sm transition-all hover:-translate-y-1">Voices</a>
+      </nav>
+      <a href="#contact"
+        class="bg-ink text-surface px-6 py-3 font-mono text-sm font-bold uppercase brutal-border interactive-element hidden md:flex items-center gap-2">
+        Init Contact <span class="material-symbols-outlined text-[18px]">terminal</span>
+      </a>
+      <button class="md:hidden bg-ink text-surface p-2 brutal-border">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="max-w-7xl mx-auto px-6 pt-40 pb-20 min-h-[90vh] flex flex-col justify-center">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+      <!-- Left Side: Copy -->
+      <div class="lg:col-span-7 flex flex-col gap-6 relative z-10">
+        <!-- Badge -->
+        <div
+          class="gsap-slide-up bg-surface brutal-border shadow-brutal p-3 inline-flex items-center gap-2 self-start -rotate-2">
+          <span class="w-3 h-3 bg-tangerine rounded-full animate-pulse brutal-border border-ink"></span>
+          <span class="font-mono text-sm font-bold tracking-tight uppercase">KyteStudios // Web & Full-Stack</span>
+        </div>
+
+        <!-- Headline -->
+        <div class="gsap-slide-up relative">
+          <div class="bg-surface brutal-border shadow-brutal p-6 md:p-10 rotate-1 relative z-10">
+            <h1
+              class="font-sans font-black text-5xl md:text-7xl lg:text-[5rem] leading-[0.95] tracking-tighter uppercase break-words">
+              Engineering<br>
+              <span class="text-electric">Without</span><br>
+              Compromise.
+            </h1>
+          </div>
+          <!-- Abstract geometry behind headline -->
+          <div
+            class="absolute -top-6 -right-4 md:-right-6 w-20 h-20 md:w-24 md:h-24 bg-tangerine brutal-border shadow-brutal rotate-12 -z-10 flex items-center justify-center">
+            <span class="material-symbols-outlined text-4xl md:text-5xl text-ink">code</span>
+          </div>
+        </div>
+
+        <!-- Subhead -->
+        <div class="gsap-slide-up bg-surface brutal-border shadow-brutal p-6 md:p-8 -rotate-1 max-w-xl">
+          <p class="font-sans text-lg md:text-xl leading-relaxed font-medium">
+            We are a specialized four-person development squad. We build high-performance web applications and robust
+            full-stack architectures. No bloat. Pure precision.
+          </p>
+        </div>
+
+        <!-- CTA -->
+        <div class="gsap-slide-up flex flex-wrap gap-4 mt-2">
+          <a href="#work"
+            class="bg-tangerine text-ink brutal-border shadow-brutal interactive-element px-6 py-4 font-mono font-bold uppercase text-sm flex items-center gap-2">
+            Deploy Project <span class="material-symbols-outlined">rocket_launch</span>
+          </a>
+          <a href="#expertise"
+            class="bg-surface text-ink brutal-border shadow-brutal interactive-element px-6 py-4 font-mono font-bold uppercase text-sm flex items-center gap-2 hidden sm:flex">
+            View Specs <span class="material-symbols-outlined">data_object</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Side: Visual -->
+      <div class="lg:col-span-5 relative mt-12 lg:mt-0 perspective-1000">
+        <div
+          class="gsap-fade-in aspect-[4/5] bg-surface brutal-border shadow-brutal rotate-3 relative overflow-hidden group">
+          <img src="./Kite_Landing.png" alt="Code Structure"
+            class="w-full h-full object-cover object-[75%_center] grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100">
+
+          <!-- Overlay badge -->
+          <div
+            class="absolute bottom-6 left-6 bg-electric text-white brutal-border shadow-brutal p-4 -rotate-3 transition-transform group-hover:rotate-0">
+            <div class="font-mono text-xs border-b border-white/30 pb-1 mb-1 font-bold">FIG. 1</div>
+            <div class="font-sans font-black text-xl md:text-2xl uppercase tracking-tight">System<br>Architecture</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities Matrix -->
+  <section id="expertise" class="max-w-7xl mx-auto px-6 py-24">
+    <div class="bg-ink text-surface brutal-border border-ink shadow-brutal p-8 md:p-12 rotate-1 relative z-10">
+      <!-- Floating accent -->
+      <div
+        class="absolute -top-5 -right-2 md:-right-4 bg-tangerine brutal-border text-ink font-mono text-xs font-bold p-2 rotate-6 shadow-brutal">
+        CORE_SYSTEMS.SYS
+      </div>
+
+      <h2
+        class="font-sans font-black text-4xl md:text-6xl uppercase tracking-tighter mb-12 border-b-2 border-surface/20 pb-6">
+        Capabilities Matrix
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 font-mono text-sm md:text-base">
+        <div class="flex flex-col gap-2 border-b border-surface/20 pb-4 group cursor-default">
+          <div class="flex justify-between items-center text-tangerine font-bold">
+            <span>01. Web Development</span>
+            <span>[100%]</span>
+          </div>
+          <div class="text-surface/60 group-hover:text-surface transition-colors">React, Vue, Next.js, WebGL</div>
+        </div>
+        <div class="flex flex-col gap-2 border-b border-surface/20 pb-4 group cursor-default">
+          <div class="flex justify-between items-center text-electric font-bold">
+            <span>02. Full-Stack Systems</span>
+            <span>[100%]</span>
+          </div>
+          <div class="text-surface/60 group-hover:text-surface transition-colors">Node.js, Go, Python, PostgreSQL</div>
+        </div>
+        <div class="flex flex-col gap-2 border-b border-surface/20 pb-4 group cursor-default">
+          <div class="flex justify-between items-center text-surface font-bold">
+            <span>03. Agentic Workflows</span>
+            <span>[100%]</span>
+          </div>
+          <div class="text-surface/60 group-hover:text-surface transition-colors">LLMs, LangChain, Custom Agents, MCP
+          </div>
+        </div>
+        <div class="flex flex-col gap-2 border-b border-surface/20 pb-4 group cursor-default">
+          <div class="flex justify-between items-center text-surface font-bold">
+            <span>04. API Architecture</span>
+            <span>[100%]</span>
+          </div>
+          <div class="text-surface/60 group-hover:text-surface transition-colors">REST, GraphQL, WebSockets, gRPC</div>
+        </div>
+        <div class="flex flex-col gap-2 border-b-0 pb-0 md:border-b border-surface/20 md:pb-4 group cursor-default">
+          <div class="flex justify-between items-center text-surface font-bold">
+            <span>05. Infrastructure</span>
+            <span>[100%]</span>
+          </div>
+          <div class="text-surface/60 group-hover:text-surface transition-colors">AWS, Docker, CI/CD, Vercel</div>
+        </div>
+        <div class="flex flex-col gap-2 border-b-0 pb-0 group cursor-default">
+          <div class="flex justify-between items-center text-surface font-bold">
+            <span>06. System Design</span>
+            <span>[100%]</span>
+          </div>
+          <div class="text-surface/60 group-hover:text-surface transition-colors">Microservices, Event-Driven,
+            Serverless</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work Section -->
+  <section id="work" class="max-w-7xl mx-auto px-6 py-24">
+    <div class="flex items-end gap-4 mb-16">
+      <h2
+        class="bg-surface brutal-border shadow-brutal p-4 font-sans font-black text-4xl md:text-5xl uppercase tracking-tighter -rotate-1 inline-block">
+        Deployed Builds
+      </h2>
+      <span class="font-mono text-electric font-bold pb-2 hidden md:inline">SELECT * FROM portfolio;</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+      <!-- Project 1 -->
+      <a href="#" class="block group gsap-section">
+        <div
+          class="bg-surface brutal-border shadow-brutal p-4 -rotate-1 transition-transform duration-300 group-hover:rotate-0 group-hover:-translate-y-2">
+          <div class="aspect-[4/3] brutal-border overflow-hidden relative mb-6">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80"
+              alt="Dashboard"
+              class="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500">
+            <div
+              class="absolute inset-0 bg-electric/20 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            </div>
+          </div>
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-sans font-black text-2xl uppercase tracking-tight mb-1">FinTech Dashboard</h3>
+              <p class="font-mono text-sm text-ink/70">React // Node // PostgreSQL</p>
+            </div>
+            <div class="bg-tangerine brutal-border px-3 py-1 font-mono text-xs font-bold text-ink">
+              +300% SPD
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Project 2 -->
+      <a href="#" class="block group gsap-section md:mt-16">
+        <div
+          class="bg-surface brutal-border shadow-brutal p-4 rotate-2 transition-transform duration-300 group-hover:rotate-0 group-hover:-translate-y-2">
+          <div class="aspect-[4/3] brutal-border overflow-hidden relative mb-6">
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1000&q=80"
+              alt="E-Commerce"
+              class="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500">
+            <div
+              class="absolute inset-0 bg-tangerine/20 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            </div>
+          </div>
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-sans font-black text-2xl uppercase tracking-tight mb-1">Global E-Commerce</h3>
+              <p class="font-mono text-sm text-ink/70">Next.js // Go // Redis</p>
+            </div>
+            <div class="bg-electric text-surface brutal-border px-3 py-1 font-mono text-xs font-bold">
+              10k+ TPS
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Voices Section -->
+  <section id="testimonials" class="max-w-7xl mx-auto px-6 py-24 relative">
+    <div class="relative z-10 flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-electric">terminal</span>
+          <h2 class="font-mono text-sm text-electric font-bold uppercase tracking-widest">VOICES // INCOMING_DISPATCH
+          </h2>
+        </div>
+        <div class="flex gap-2">
+          <button id="prev-testimonial"
+            class="w-10 h-10 brutal-border flex items-center justify-center bg-surface hover:bg-electric hover:text-surface transition-colors interactive-element">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
+          <button id="next-testimonial"
+            class="w-10 h-10 brutal-border flex items-center justify-center bg-surface hover:bg-electric hover:text-surface transition-colors interactive-element">
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="testimonials-carousel"
+        class="flex overflow-x-auto snap-x snap-mandatory pb-8 pt-4 -mx-6 px-6 gap-6 hide-scrollbar cursor-grab active:cursor-grabbing scroll-smooth">
+
+        <!-- Testimonial 1 -->
+        <div
+          class="w-[95%] md:w-[85%] lg:w-[80%] snap-center shrink-0 gsap-section bg-surface brutal-border shadow-brutal p-8 md:p-12 rotate-1 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-1 bg-electric/10"></div>
+          <div class="flex gap-6">
+            <span
+              class="material-symbols-outlined text-6xl text-electric opacity-20 hidden md:block shrink-0">format_quote</span>
+            <blockquote class="flex-1 flex flex-col gap-6 min-w-0">
+              <p
+                class="font-serif text-3xl md:text-5xl italic text-ink leading-[1.1] tracking-tight font-black break-words">
+                "Their structural approach to web engineering transformed our digital footprint from a fragile
+                storefront into a fortress of conversion."
+              </p>
+              <footer class="font-mono text-xs font-bold text-ink flex items-center gap-2">
+                <span class="w-8 h-px bg-ink shrink-0"></span>
+                CHIEF TECHNOLOGY OFFICER, LOGISTICS CORP.
+              </footer>
+            </blockquote>
+          </div>
+          <div class="absolute bottom-4 right-4 font-mono text-[10px] text-ink/40 uppercase font-bold">
+            Ref: Case_Study_#001 // End_Transmission
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div
+          class="w-[95%] md:w-[85%] lg:w-[80%] snap-center shrink-0 gsap-section bg-surface brutal-border shadow-brutal p-8 md:p-12 -rotate-1 relative overflow-hidden mt-4 lg:mt-0">
+          <div class="absolute top-0 left-0 w-full h-1 bg-tangerine/10"></div>
+          <div class="flex gap-6">
+            <span
+              class="material-symbols-outlined text-6xl text-tangerine opacity-20 hidden md:block shrink-0">format_quote</span>
+            <blockquote class="flex-1 flex flex-col gap-6 min-w-0">
+              <p
+                class="font-serif text-3xl md:text-5xl italic text-ink leading-[1.1] tracking-tight font-black break-words">
+                "KyteStudios delivered a full-stack architecture that scales effortlessly. Absolute precision from day
+                one."
+              </p>
+              <footer class="font-mono text-xs font-bold text-ink flex items-center gap-2">
+                <span class="w-8 h-px bg-ink shrink-0"></span>
+                LEAD ENGINEER, FINTECH SYNDICATE
+              </footer>
+            </blockquote>
+          </div>
+          <div class="absolute bottom-4 right-4 font-mono text-[10px] text-ink/40 uppercase font-bold">
+            Ref: Case_Study_#002 // End_Transmission
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div
+          class="w-[95%] md:w-[85%] lg:w-[80%] snap-center shrink-0 gsap-section bg-surface brutal-border shadow-brutal p-8 md:p-12 rotate-1 relative overflow-hidden mt-4 lg:mt-0">
+          <div class="absolute top-0 left-0 w-full h-1 bg-electric/10"></div>
+          <div class="flex gap-6">
+            <span
+              class="material-symbols-outlined text-6xl text-electric opacity-20 hidden md:block shrink-0">format_quote</span>
+            <blockquote class="flex-1 flex flex-col gap-6 min-w-0">
+              <p
+                class="font-serif text-3xl md:text-5xl italic text-ink leading-[1.1] tracking-tight font-black break-words">
+                "A rare combination of beautiful interface design and deeply robust backend systems. They build to
+                last."
+              </p>
+              <footer class="font-mono text-xs font-bold text-ink flex items-center gap-2">
+                <span class="w-8 h-px bg-ink shrink-0"></span>
+                PRODUCT MANAGER, GLOBAL E-COMMERCE
+              </footer>
+            </blockquote>
+          </div>
+          <div class="absolute bottom-4 right-4 font-mono text-[10px] text-ink/40 uppercase font-bold">
+            Ref: Case_Study_#003 // End_Transmission
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form -->
+  <section id="contact" class="max-w-7xl mx-auto px-6 py-24 pb-40">
+    <div
+      class="bg-surface brutal-border shadow-brutal p-8 md:p-12 -rotate-1 grid grid-cols-1 lg:grid-cols-2 gap-12 relative">
+      <!-- Center dashed line divider -->
+      <div
+        class="hidden lg:block absolute left-1/2 top-12 bottom-12 w-[2px] border-l-2 border-dashed border-ink/20 -translate-x-1/2">
+      </div>
+
+      <!-- Left side: Form -->
+      <div class="flex flex-col gap-8 z-10 pr-0 lg:pr-8">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-tangerine text-4xl">terminal</span>
+          <h2 class="font-sans font-black text-4xl uppercase tracking-tighter">Initiate Contact</h2>
+        </div>
+        <form class="flex flex-col gap-6">
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-bold text-ink/70">Name</label>
+            <input type="text"
+              class="bg-bg brutal-border p-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-electric transition-shadow"
+              placeholder="Jane Doe">
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-bold text-ink/70">Email</label>
+            <input type="email"
+              class="bg-bg brutal-border p-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-electric transition-shadow"
+              placeholder="hello@kytestudios.com">
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-bold text-ink/70">Message</label>
+            <textarea rows="4"
+              class="bg-bg brutal-border p-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-electric resize-none transition-shadow"
+              placeholder="Define project specifications here..."></textarea>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right side: Submit & visual -->
+      <div class="flex flex-col justify-between items-start lg:items-end z-10 pl-0 lg:pl-8">
+        <div
+          class="w-32 h-32 brutal-border flex flex-col items-center justify-center p-4 rotate-6 opacity-40 bg-bg hidden lg:flex">
+          <span class="material-symbols-outlined text-5xl">local_post_office</span>
+          <span class="font-mono text-[10px] text-center mt-2 font-bold leading-tight">POSTAGE<br>REQUIRED</span>
+        </div>
+
+        <div class="w-full mt-8 lg:mt-0">
+          <button
+            class="w-full bg-electric text-surface brutal-border shadow-brutal interactive-element px-8 py-5 font-mono font-bold uppercase flex items-center justify-center gap-3 hover:bg-ink transition-colors">
+            Transmit Data <span class="material-symbols-outlined">send</span>
+          </button>
+          <p class="font-mono text-xs text-ink/50 mt-4 text-center lg:text-right">Encrypted End-to-End // Response SLA:
+            24hrs</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-ink text-surface py-12 px-6 mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="font-sans font-black text-2xl tracking-tighter flex items-center gap-3">
+        KyteStudios
+      </div>
+      <div class="font-mono text-xs text-surface/50 text-center">
+        © KyteStudios 2026
+      </div>
+      <div class="flex gap-6 font-mono text-sm font-bold">
+        <a href="#" class="hover:text-tangerine transition-colors">GitHub</a>
+        <a href="#" class="hover:text-electric transition-colors">Twitter</a>
+        <a href="#" class="hover:text-tangerine transition-colors">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Smooth scrolling initialization
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Anchor link smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = this.getAttribute('href');
+        if (target === '#') {
+          lenis.scrollTo(0, { duration: 1.2 });
+        } else {
+          lenis.scrollTo(target, { duration: 1.2, offset: -80 });
+        }
+      });
+    });
+
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Initial load animations
+    window.addEventListener('load', () => {
+      // Slide up elements
+      gsap.fromTo('.gsap-slide-up',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.2 }
+      );
+
+      // Fade in elements
+      gsap.fromTo('.gsap-fade-in',
+        { scale: 0.95, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.4 }
+      );
+    });
+
+    // Testimonials Carousel Controls
+    const carousel = document.getElementById('testimonials-carousel');
+    const prevBtn = document.getElementById('prev-testimonial');
+    const nextBtn = document.getElementById('next-testimonial');
+
+    if (carousel && prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: -carousel.clientWidth * 0.8, behavior: 'smooth' });
+      });
+      nextBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: carousel.clientWidth * 0.8, behavior: 'smooth' });
+      });
+    }
+
+    // Scroll animations for sections
+    gsap.utils.toArray('.gsap-section').forEach(section => {
+      gsap.from(section, {
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
